@@ -6,17 +6,35 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
-import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
+import com.hosseinkurd.arrowstepper.component.enums.ShitState
 
-class ShitItem @JvmOverloads constructor(
+class ShitView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : View(
+) : AppCompatTextView(
     context,
     attributeSet,
     defStyleAttr
 ) {
+    private var state: ShitState = ShitState.SHIT_COLLAPSED
+
+    fun collapseState() {
+        state = ShitState.SHIT_COLLAPSED
+    }
+
+    fun expandState() {
+        state = ShitState.SHIT_EXPANDED
+    }
+
+    fun toggleState() {
+        if (state == ShitState.SHIT_COLLAPSED) {
+            expandState()
+        } else {
+            collapseState()
+        }
+    }
 
     private val paint = Paint()
     private val path = Path()
@@ -24,11 +42,12 @@ class ShitItem @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         paint.apply {
-            color = Color.argb(100, 0, 220, 220)
+            color = if (state == ShitState.SHIT_COLLAPSED) {
+                Color.argb(100, 190, 220, 220)
+            } else Color.argb(100, 0, 220, 220)
             style = Paint.Style.FILL
             isAntiAlias = true
         }
-
         path.apply {
             moveTo(0f, 0f)
             lineTo((width - (width * 0.09)).toFloat(), 0F)
@@ -37,8 +56,6 @@ class ShitItem @JvmOverloads constructor(
             lineTo(0f, height.toFloat())
             lineTo((width * 0.09).toFloat(), (height * 0.5).toFloat())
         }
-
         canvas!!.drawPath(path, paint)
-
     }
 }

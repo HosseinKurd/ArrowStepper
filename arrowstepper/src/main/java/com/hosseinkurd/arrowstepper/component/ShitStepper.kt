@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.hosseinkurd.arrowstepper.R
+import com.hosseinkurd.arrowstepper.component.`interface`.OnShitClickListener
 
 class ShitStepper @JvmOverloads constructor(
     context: Context,
@@ -18,27 +19,43 @@ class ShitStepper @JvmOverloads constructor(
         defStyleAttr
     ) {
 
+    var onShitClickListener: OnShitClickListener? = null
     private val mainView: View = inflate(context, R.layout.stepper_view, this)
     private val childWidth: Int = 100
 
+    fun addShits(shits: MutableList<ShitView>) {
+        shits.forEach { shitView ->
+            val linearLayoutShitHolder: LinearLayout =
+                mainView.findViewById(R.id.linearLayoutShitHolder)
+            println("child count : ${linearLayoutShitHolder.childCount}")
+            linearLayoutShitHolder.addView(getNewChild(linearLayoutShitHolder.childCount, shitView))
+        }
+    }
 
     fun addShit() {
         val linearLayoutShitHolder: LinearLayout =
             mainView.findViewById(R.id.linearLayoutShitHolder)
-        linearLayoutShitHolder.addView(getNewChild(linearLayoutShitHolder.childCount == 0))
+        linearLayoutShitHolder.addView(
+            getNewChild(
+                childCount = linearLayoutShitHolder.childCount,
+                shitItem = ShitView(context)
+            )
+        )
     }
 
-    private fun getNewChild(isFirstChild: Boolean): View {
+    private fun getNewChild(childCount: Int, shitItem: ShitView): View {
         val childWidthInDP = getInDP(childWidth)
-        val view = ShitItem(context)
         val layoutParams = LinearLayout.LayoutParams(childWidthInDP, LayoutParams.MATCH_PARENT)
-        if (isFirstChild.not()) {
+        if (childCount > 0) {
             layoutParams.marginStart = (childWidthInDP * -0.05).toInt()
         }
-        view.layoutParams = layoutParams
-        view.id = View.generateViewId()
-        println("ShitStepper >> new child id : ${view.id}")
-        return view
+        shitItem.layoutParams = layoutParams
+        shitItem.id = View.generateViewId()
+        shitItem.setOnClickListener {
+            onShitClickListener?.onShitClicked(shitItem, childCount)
+        }
+        println("ShitStepper >> new child id : ${shitItem.id}")
+        return shitItem
     }
 
     private fun getInDP(number: Int): Int {
