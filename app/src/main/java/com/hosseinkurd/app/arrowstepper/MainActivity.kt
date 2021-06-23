@@ -1,11 +1,16 @@
 package com.hosseinkurd.app.arrowstepper
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.hosseinkurd.arrowstepper.component.ShitStepper
 import com.hosseinkurd.arrowstepper.component.ShitView
 import com.hosseinkurd.arrowstepper.component.`interface`.OnShitClickListener
+import com.hosseinkurd.arrowstepper.component.`interface`.OnStateChangedListener
+import com.hosseinkurd.arrowstepper.component.enums.ShitState
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +52,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getShitView(): ShitView {
-        return ShitView(this)
+        return ShitView(this).apply {
+            addChild(TextView(context).also {
+                it.text = "Touch It 0123456789"
+                it.setTextColor(Color.BLACK)
+                it.gravity = Gravity.CENTER
+                onStateChangedListener = object : OnStateChangedListener {
+                    override fun onStateChanged(shitState: ShitState) {
+                        it.text = if (shitState == ShitState.SHIT_EXPANDED) {
+                            "Expanded"
+                        } else "Collapsed"
+                    }
+                }
+            })
+        }
     }
-
 }
