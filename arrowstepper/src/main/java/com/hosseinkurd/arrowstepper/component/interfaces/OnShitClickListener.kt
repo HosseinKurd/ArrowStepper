@@ -1,4 +1,4 @@
-package com.hosseinkurd.arrowstepper.component.`interface`
+package com.hosseinkurd.arrowstepper.component.interfaces
 
 import com.hosseinkurd.arrowstepper.component.ShitView
 

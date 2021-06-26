@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.hosseinkurd.arrowstepper.component.ShitStepper
 import com.hosseinkurd.arrowstepper.component.ShitView
-import com.hosseinkurd.arrowstepper.component.`interface`.OnShitClickListener
-import com.hosseinkurd.arrowstepper.component.`interface`.OnStateChangedListener
+import com.hosseinkurd.arrowstepper.component.interfaces.OnShitClickListener
+import com.hosseinkurd.arrowstepper.component.interfaces.OnStateChangedListener
 import com.hosseinkurd.arrowstepper.component.enums.ShitState
 
 class MainActivity : AppCompatActivity() {
@@ -54,13 +54,13 @@ class MainActivity : AppCompatActivity() {
     private fun getShitView(): ShitView {
         return ShitView(this).apply {
             addChild(TextView(context).also {
-                it.text = "Touch It 0123456789"
+                it.text = "Collapsed default"
                 it.setTextColor(Color.BLACK)
                 it.gravity = Gravity.CENTER
                 onStateChangedListener = object : OnStateChangedListener {
                     override fun onStateChanged(shitState: ShitState) {
                         it.text = if (shitState == ShitState.SHIT_EXPANDED) {
-                            "Expanded"
+                            "Expanded Expanded Expanded Expanded"
                         } else "Collapsed"
                     }
                 }

@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import com.hosseinkurd.arrowstepper.component.`interface`.OnStateChangedListener
+import com.hosseinkurd.arrowstepper.component.interfaces.OnStateChangedListener
 import com.hosseinkurd.arrowstepper.component.enums.ShitState
 
 class ShitView @JvmOverloads constructor(
@@ -23,15 +23,16 @@ class ShitView @JvmOverloads constructor(
     defStyleAttr
 ) {
     var onStateChangedListener: OnStateChangedListener? = null
+    var obliqueHorizontalGap = 24.75f
     private var state: ShitState = ShitState.SHIT_COLLAPSED
     private val paint = Paint()
     private val path = Path()
 
     fun addChild(view: View) {
         view.apply {
-            setPadding(getGap().toInt(), 0, getGap().toInt(), 0)
+            setPadding(obliqueHorizontalGap.toInt(), 0, obliqueHorizontalGap.toInt(), 0)
             id = View.generateViewId()
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT)
             addConstraintSet(id)
             addView(this)
         }
@@ -70,11 +71,13 @@ class ShitView @JvmOverloads constructor(
     fun collapseState() {
         state = ShitState.SHIT_COLLAPSED
         onStateChangedListener?.onStateChanged(state)
+        invalidate()
     }
 
     fun expandState() {
         state = ShitState.SHIT_EXPANDED
         onStateChangedListener?.onStateChanged(state)
+        invalidate()
     }
 
     fun toggleState() {
@@ -86,7 +89,7 @@ class ShitView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
-        // println("ShitStepper >> ShitView >> onDraw ...")
+        println("ShitStepper >> ShitView >> onDraw ... ${obliqueHorizontalGap}")
         super.onDraw(canvas)
         paint.apply {
             color = if (state == ShitState.SHIT_COLLAPSED) {
@@ -97,16 +100,13 @@ class ShitView @JvmOverloads constructor(
         }
         path.apply {
             moveTo(0f, 0f)
-            lineTo((width - getGap()).toFloat(), 0F)
+            lineTo(width - obliqueHorizontalGap, 0F)
             lineTo(width.toFloat(), (height * 0.5).toFloat())
-            lineTo((width - (width * 0.09)).toFloat(), height.toFloat())
+            lineTo(width - obliqueHorizontalGap, height.toFloat())
             lineTo(0f, height.toFloat())
-            lineTo(getGap().toFloat(), (height * 0.5).toFloat())
+            lineTo(obliqueHorizontalGap, (height * 0.5).toFloat())
         }
         canvas!!.drawPath(path, paint)
     }
 
-    private fun getGap(): Double {
-        return width * 0.09
-    }
 }

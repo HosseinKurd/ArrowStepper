@@ -25,7 +25,10 @@
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shitStepperCollapsedColor="@color/shit_background_disabled"
+        app:shitStepperExpandedColor="@color/shit_background_enabled"
+        app:shitStepperObliqueHorizontalGap="12dp" />
 
     <com.hosseinkurd.arrowstepper.component.ShitView
         android:id="@+id/shitItem"

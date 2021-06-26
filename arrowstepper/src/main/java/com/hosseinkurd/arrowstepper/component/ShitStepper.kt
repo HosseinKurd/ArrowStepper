@@ -1,13 +1,13 @@
 package com.hosseinkurd.arrowstepper.component
 
 import android.content.Context
-import android.graphics.Color
+import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.hosseinkurd.arrowstepper.R
-import com.hosseinkurd.arrowstepper.component.`interface`.OnShitClickListener
+import com.hosseinkurd.arrowstepper.component.interfaces.OnShitClickListener
 
 class ShitStepper @JvmOverloads constructor(
     context: Context,
@@ -21,14 +21,28 @@ class ShitStepper @JvmOverloads constructor(
     ) {
 
     var onShitClickListener: OnShitClickListener? = null
+    private var obliqueHorizontalGap = 24.75f
     private val mainView: View = inflate(context, R.layout.stepper_view, this)
-    private val childWidth: Int = 100
+    // private val childWidth: Int = 100
+
+    init {
+        if (attributeSet != null) {
+            val array: TypedArray = context.obtainStyledAttributes(
+                attributeSet,
+                R.styleable.ShitStepper, defStyleAttr, 0
+            )
+            obliqueHorizontalGap =
+                array.getDimension(R.styleable.ShitStepper_shitStepperObliqueHorizontalGap, 100F)
+            println("ShitStepper >> obliqueHorizontalGap : $obliqueHorizontalGap")
+            array.recycle()
+        }
+    }
 
     fun addShits(shits: MutableList<ShitView>) {
         shits.forEach { shitView ->
             val linearLayoutShitHolder: LinearLayout =
                 mainView.findViewById(R.id.linearLayoutShitHolder)
-            println("child count : ${linearLayoutShitHolder.childCount}")
+            println("ShitStepper >> child count : ${linearLayoutShitHolder.childCount}")
             linearLayoutShitHolder.addView(getNewChild(linearLayoutShitHolder.childCount, shitView))
         }
         postInvalidate()
@@ -46,12 +60,13 @@ class ShitStepper @JvmOverloads constructor(
     }
 
     private fun getNewChild(childCount: Int, shitView: ShitView): View {
+        shitView.obliqueHorizontalGap=obliqueHorizontalGap
         val paddingOffsetVertical = paddingTop + paddingBottom
-        val childWidthInDP = getInDP(childWidth)
+        // val childWidthInDP = getInDP(childWidth)
         val mLayoutParams =
-            LinearLayout.LayoutParams(childWidthInDP, height - paddingOffsetVertical)
+            LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, height - paddingOffsetVertical)
         if (childCount > 0) {
-            mLayoutParams.marginStart = (childWidthInDP * -0.05).toInt()
+            mLayoutParams.marginStart = (obliqueHorizontalGap / -2).toInt()
             // mLayoutParams.marginStart = (childWidthInDP * 0.05).toInt()
             // mLayoutParams.marginEnd = (childWidthInDP * 0.1).toInt()
         }
