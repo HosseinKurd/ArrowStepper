@@ -1,6 +1,7 @@
 package com.hosseinkurd.arrowstepper.component
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -9,8 +10,8 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import com.hosseinkurd.arrowstepper.component.interfaces.OnStateChangedListener
 import com.hosseinkurd.arrowstepper.component.enums.ShitState
+import com.hosseinkurd.arrowstepper.component.interfaces.OnStateChangedListener
 
 class ShitView @JvmOverloads constructor(
     context: Context,
@@ -24,6 +25,8 @@ class ShitView @JvmOverloads constructor(
 ) {
     var onStateChangedListener: OnStateChangedListener? = null
     var obliqueHorizontalGap = 24.75f
+    var colorExpanded: ColorStateList? = null
+    var colorCollapsed: ColorStateList? = null
     private var state: ShitState = ShitState.SHIT_COLLAPSED
     private val paint = Paint()
     private val path = Path()
@@ -89,12 +92,20 @@ class ShitView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
-        println("ShitStepper >> ShitView >> onDraw ... ${obliqueHorizontalGap}")
+        println("ShitStepper >> ShitView >> onDraw ... $obliqueHorizontalGap")
         super.onDraw(canvas)
         paint.apply {
             color = if (state == ShitState.SHIT_COLLAPSED) {
+                /*if (colorCollapsed != null) {
+                    return colorCollapsed
+                }*/
                 Color.argb(100, 190, 220, 220)
-            } else Color.argb(100, 0, 220, 220)
+            } else {
+                /*if (colorExpanded != null) {
+                    return colorExpanded
+                }*/
+                Color.argb(100, 0, 220, 220)
+            }
             style = Paint.Style.FILL
             isAntiAlias = true
         }

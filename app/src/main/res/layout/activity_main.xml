@@ -7,16 +7,6 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/buttonSubmit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.hosseinkurd.arrowstepper.component.ShitStepper
         android:id="@+id/shitStepper"
         android:layout_width="0dp"
@@ -26,17 +16,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shitStepperCollapsedColor="@color/shit_background_disabled"
         app:shitStepperExpandedColor="@color/shit_background_enabled"
-        app:shitStepperObliqueHorizontalGap="12dp" />
+        app:shitStepperObliqueHorizontalGap="16dp" />
 
-    <com.hosseinkurd.arrowstepper.component.ShitView
-        android:id="@+id/shitItem"
+    <Button
+        android:id="@+id/buttonSubmit"
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

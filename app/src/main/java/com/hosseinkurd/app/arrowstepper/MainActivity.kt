@@ -29,23 +29,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.buttonSubmit).setOnClickListener {
             val shits = mutableListOf<ShitView>().apply {
                 add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
-                add(getShitView())
             }
             shitStepper.addShits(shits)
         }
@@ -54,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private fun getShitView(): ShitView {
         return ShitView(this).apply {
             addChild(TextView(context).also {
-                it.text = "Collapsed default"
+                it.text = "Collapsed"
                 it.setTextColor(Color.BLACK)
                 it.gravity = Gravity.CENTER
                 onStateChangedListener = object : OnStateChangedListener {
