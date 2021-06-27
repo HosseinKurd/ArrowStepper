@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="ShitStepper">
         <attr name="shitStepperObliqueHorizontalGap" format="dimension"/>
+        <attr name="shitStepperSingleExpand" format="boolean"/>
     </declare-styleable>
 </resources>

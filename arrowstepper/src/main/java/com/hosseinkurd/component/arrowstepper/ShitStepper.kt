@@ -25,21 +25,31 @@ class ShitStepper @JvmOverloads constructor(
     var onShitClickListener: OnShitClickListener? = null
     var collapsedAnimation: Animation? = null
     var expandedAnimation: Animation? = null
+    var singleExpand: Boolean = true
     private var obliqueHorizontalGap = 24.75f
     private var colorExpanded: ColorStateList? = null
     private var colorCollapsed: ColorStateList? = null
     private val mainView: View = inflate(context, R.layout.stepper_view, this)
-    // private val childWidth: Int = 100
 
     init {
         if (attributeSet != null) {
-            val array: TypedArray = context.obtainStyledAttributes(
+            val typedArray: TypedArray = context.obtainStyledAttributes(
                 attributeSet,
                 R.styleable.ShitStepper, defStyleAttr, 0
             )
             obliqueHorizontalGap =
-                array.getDimension(R.styleable.ShitStepper_shitStepperObliqueHorizontalGap, 100F)
-            array.recycle()
+                typedArray.getDimension(
+                    R.styleable.ShitStepper_shitStepperObliqueHorizontalGap,
+                    100F
+                )
+            if (typedArray.hasValue(R.styleable.ShitStepper_shitStepperSingleExpand)) {
+                singleExpand =
+                    typedArray.getBoolean(
+                        R.styleable.ShitStepper_shitStepperSingleExpand,
+                        true
+                    )
+            }
+            typedArray.recycle()
         }
     }
 
@@ -56,7 +66,12 @@ class ShitStepper @JvmOverloads constructor(
             }
             val linearLayoutShitHolder: LinearLayout =
                 mainView.findViewById(R.id.linearLayoutShitHolder)
-            linearLayoutShitHolder.addView(getNewChild(linearLayoutShitHolder.childCount, shitView))
+            linearLayoutShitHolder.addView(
+                getNewChild(
+                    parent = linearLayoutShitHolder,
+                    shitView = shitView
+                )
+            )
         }
         postInvalidate()
     }
@@ -66,42 +81,55 @@ class ShitStepper @JvmOverloads constructor(
             mainView.findViewById(R.id.linearLayoutShitHolder)
         linearLayoutShitHolder.addView(
             getNewChild(
-                childCount = linearLayoutShitHolder.childCount,
+                parent = linearLayoutShitHolder,
                 shitView = ShitView(context)
             )
         )
     }
 
-    private fun getNewChild(childCount: Int, shitView: ShitView): View {
+    fun addShitAt(index: Int) {
+        val linearLayoutShitHolder: LinearLayout =
+            mainView.findViewById(R.id.linearLayoutShitHolder)
+        linearLayoutShitHolder.addView(
+            getNewChild(
+                parent = linearLayoutShitHolder,
+                shitView = ShitView(context)
+            ), index
+        )
+    }
+
+    private fun getNewChild(parent: LinearLayout, shitView: ShitView): View {
+        val parentChildIndex: Int = parent.childCount
         shitView.obliqueHorizontalGap = obliqueHorizontalGap
         shitView.colorExpanded = colorExpanded
         shitView.colorCollapsed = colorCollapsed
         val paddingOffsetVertical = paddingTop + paddingBottom
-        // val childWidthInDP = getInDP(childWidth)
         val mLayoutParams =
             LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, height - paddingOffsetVertical)
-        if (childCount > 0) {
+        if (parentChildIndex > 0) {
             mLayoutParams.marginStart = (obliqueHorizontalGap * -0.8).toInt()
-            // mLayoutParams.marginStart = (childWidthInDP * 0.05).toInt()
-            // mLayoutParams.marginEnd = (childWidthInDP * 0.1).toInt()
         }
         shitView.apply {
             layoutParams = mLayoutParams
             id = View.generateViewId()
             setOnClickListener {
-                onShitClickListener?.onShitClicked(shitView, childCount)
+                onShitClickListener?.onShitClicked(shitView, parentChildIndex)
                 if (shitView.state == ShitState.SHIT_COLLAPSED && collapsedAnimation != null) {
                     shitView.startAnimation(collapsedAnimation)
                 } else if (shitView.state == ShitState.SHIT_EXPANDED && expandedAnimation != null) {
                     shitView.startAnimation(expandedAnimation)
+                    for (i in 0..parent.childCount) {
+                        if (i == parentChildIndex) continue
+                        if (parent.getChildAt(i) is ShitView) {
+                            (parent.getChildAt(i) as ShitView).apply {
+                                if (state == ShitState.SHIT_EXPANDED) collapseState()
+                            }
+                        }
+                    }
                 }
             }
             setWillNotDraw(false)
         }
         return shitView
-    }
-
-    private fun getInDP(number: Int): Int {
-        return (number * context.resources.displayMetrics.density + 0.5f).toInt()
     }
 }
