@@ -53,6 +53,15 @@ class ShitStepper @JvmOverloads constructor(
 
     fun addShits(shits: MutableList<ShitView>) {
         shits.forEach { shitView ->
+            if (shitView.childCount > 0) {
+                shitView.getChildAt(0)
+                    .setPadding(
+                        obliqueHorizontalGap.toInt(),
+                        0,
+                        obliqueHorizontalGap.toInt(),
+                        0
+                    )
+            }
             val linearLayoutShitHolder: LinearLayout =
                 mainView.findViewById(R.id.linearLayoutShitHolder)
             linearLayoutShitHolder.addView(getNewChild(linearLayoutShitHolder.childCount, shitView))
@@ -80,7 +89,7 @@ class ShitStepper @JvmOverloads constructor(
         val mLayoutParams =
             LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, height - paddingOffsetVertical)
         if (childCount > 0) {
-            mLayoutParams.marginStart = (obliqueHorizontalGap / -2).toInt()
+            mLayoutParams.marginStart = (obliqueHorizontalGap * -0.35).toInt()
             // mLayoutParams.marginStart = (childWidthInDP * 0.05).toInt()
             // mLayoutParams.marginEnd = (childWidthInDP * 0.1).toInt()
         }

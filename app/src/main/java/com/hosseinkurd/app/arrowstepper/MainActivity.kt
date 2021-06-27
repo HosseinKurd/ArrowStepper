@@ -35,19 +35,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getShitView(): ShitView {
-        return ShitView(this).apply {
+        val shitView = ShitView(this).apply {
             addChild(TextView(context).also {
-                it.text = "Collapsed"
+                it.text = "Collapsed Collapsed Collapsed"
                 it.setTextColor(Color.BLACK)
                 it.gravity = Gravity.CENTER
                 onStateChangedListener = object : OnStateChangedListener {
                     override fun onStateChanged(shitState: ShitState) {
                         it.text = if (shitState == ShitState.SHIT_EXPANDED) {
                             "Expanded Expanded Expanded Expanded"
-                        } else "Collapsed"
+                        } else "Collapsed Collapsed Collapsed"
                     }
                 }
             })
         }
+        return shitView
     }
 }
