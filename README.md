@@ -2,6 +2,8 @@
 
 Usage:
 
+Check this [link](https://jitpack.io/#HosseinKurd/ArrowStepper "jitpack HosseinKurd ArrowStepper") to find Last version
+
 # Gradle:
 Step 1. Add the JitPack repository to your build file
 Add it to your root build.gradle at the end of repositories:
@@ -16,7 +18,7 @@ Add it to your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-	        implementation 'com.github.HosseinKurd:ArrowStepper:v0.8.3-bata'
+	        implementation 'com.github.HosseinKurd:ArrowStepper:$version'
 	}
 
 # Kotlin sample Code:
@@ -73,3 +75,6 @@ Step 2. Add the dependency
         app:layout_constraintTop_toTopOf="parent"
         app:shitStepperExpandedColor="@color/shit_background_enabled"
         app:shitStepperObliqueHorizontalGap="12dp" />
+
+
+Good Luck
