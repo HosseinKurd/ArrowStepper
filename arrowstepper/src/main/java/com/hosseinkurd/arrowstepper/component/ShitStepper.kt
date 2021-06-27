@@ -5,9 +5,11 @@ import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.Animation
 import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.hosseinkurd.arrowstepper.R
+import com.hosseinkurd.arrowstepper.component.enums.ShitState
 import com.hosseinkurd.arrowstepper.component.interfaces.OnShitClickListener
 
 class ShitStepper @JvmOverloads constructor(
@@ -22,6 +24,8 @@ class ShitStepper @JvmOverloads constructor(
     ) {
 
     var onShitClickListener: OnShitClickListener? = null
+    var collapsedAnimation: Animation? = null
+    var expandedAnimation: Animation? = null
     private var obliqueHorizontalGap = 24.75f
     private var colorExpanded: ColorStateList? = null
     private var colorCollapsed: ColorStateList? = null
@@ -56,9 +60,9 @@ class ShitStepper @JvmOverloads constructor(
             if (shitView.childCount > 0) {
                 shitView.getChildAt(0)
                     .setPadding(
-                        obliqueHorizontalGap.toInt(),
+                        (obliqueHorizontalGap * 1.2).toInt(),
                         0,
-                        obliqueHorizontalGap.toInt(),
+                        (obliqueHorizontalGap * 1.2).toInt(),
                         0
                     )
             }
@@ -89,7 +93,7 @@ class ShitStepper @JvmOverloads constructor(
         val mLayoutParams =
             LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, height - paddingOffsetVertical)
         if (childCount > 0) {
-            mLayoutParams.marginStart = (obliqueHorizontalGap * -0.35).toInt()
+            mLayoutParams.marginStart = (obliqueHorizontalGap * -0.8).toInt()
             // mLayoutParams.marginStart = (childWidthInDP * 0.05).toInt()
             // mLayoutParams.marginEnd = (childWidthInDP * 0.1).toInt()
         }
@@ -98,6 +102,11 @@ class ShitStepper @JvmOverloads constructor(
             id = View.generateViewId()
             setOnClickListener {
                 onShitClickListener?.onShitClicked(shitView, childCount)
+                if (shitView.state == ShitState.SHIT_COLLAPSED && collapsedAnimation != null) {
+                    shitView.startAnimation(collapsedAnimation)
+                } else if (shitView.state == ShitState.SHIT_EXPANDED && expandedAnimation != null) {
+                    shitView.startAnimation(expandedAnimation)
+                }
             }
             setWillNotDraw(false)
         }

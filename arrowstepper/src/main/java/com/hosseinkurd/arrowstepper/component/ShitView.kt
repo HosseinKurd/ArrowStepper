@@ -27,13 +27,16 @@ class ShitView @JvmOverloads constructor(
     var obliqueHorizontalGap = 24.75f
     var colorExpanded: ColorStateList? = null
     var colorCollapsed: ColorStateList? = null
-    private var state: ShitState = ShitState.SHIT_COLLAPSED
-    private val paint = Paint()
-    private val path = Path()
+    var state: ShitState = ShitState.SHIT_COLLAPSED
 
     fun addChild(view: View) {
         view.apply {
-            setPadding(obliqueHorizontalGap.toInt(), 0, obliqueHorizontalGap.toInt(), 0)
+            setPadding(
+                (obliqueHorizontalGap * 1.2).toInt(),
+                0,
+                (obliqueHorizontalGap * 1.2).toInt(),
+                0
+            )
             id = View.generateViewId()
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT)
             addConstraintSet(id)
@@ -92,8 +95,17 @@ class ShitView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
-        println("ShitStepper >> ShitView >> onDraw ... $obliqueHorizontalGap")
+        println("ShitStepper >> ShitView >> onDraw ... $state , $width")
+        drawShape(canvas)
         super.onDraw(canvas)
+    }
+
+    private fun drawShape(canvas: Canvas?) {
+        if (canvas == null) {
+            return
+        }
+        val paint = Paint()
+        val path = Path()
         paint.apply {
             color = if (state == ShitState.SHIT_COLLAPSED) {
                 /*if (colorCollapsed != null) {
@@ -117,7 +129,7 @@ class ShitView @JvmOverloads constructor(
             lineTo(0f, height.toFloat())
             lineTo(obliqueHorizontalGap, (height * 0.5).toFloat())
         }
-        canvas!!.drawPath(path, paint)
+        canvas.drawPath(path, paint)
     }
 
 }
