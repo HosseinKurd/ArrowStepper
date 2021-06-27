@@ -64,7 +64,7 @@ Step 2. Add the dependency
 
 # XML:
 
-    <com.hosseinkurd.arrowstepper.component.ShitStepper
+    <com.hosseinkurd.component.arrowstepper.ShitStepper
         android:id="@+id/shitStepper"
         android:layout_width="0dp"
         android:layout_height="100dp"

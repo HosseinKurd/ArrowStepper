@@ -7,7 +7,7 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
-    <com.hosseinkurd.arrowstepper.component.ShitStepper
+    <com.hosseinkurd.component.arrowstepper.ShitStepper
         android:id="@+id/shitStepper"
         android:layout_width="0dp"
         android:layout_height="100dp"
@@ -16,7 +16,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shitStepperExpandedColor="@color/shit_background_enabled"
         app:shitStepperObliqueHorizontalGap="12dp" />
 
     <Button

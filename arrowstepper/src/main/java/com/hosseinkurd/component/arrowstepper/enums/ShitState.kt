@@ -1,4 +1,4 @@
-package com.hosseinkurd.arrowstepper.component.enums
+package com.hosseinkurd.component.arrowstepper.enums
 
 enum class ShitState {
     SHIT_EXPANDED,

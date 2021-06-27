@@ -1,4 +1,4 @@
-package com.hosseinkurd.arrowstepper
+package com.hosseinkurd.component.arrowstepper
 
 import org.junit.Test
 

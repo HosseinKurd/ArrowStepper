@@ -2,7 +2,5 @@
 <resources>
     <declare-styleable name="ShitStepper">
         <attr name="shitStepperObliqueHorizontalGap" format="dimension"/>
-        <attr name="shitStepperCollapsedColor" format="color|reference"/>
-        <attr name="shitStepperExpandedColor" format="color|reference"/>
     </declare-styleable>
 </resources>

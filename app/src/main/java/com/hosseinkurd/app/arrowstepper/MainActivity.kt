@@ -7,11 +7,11 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.hosseinkurd.arrowstepper.component.ShitStepper
-import com.hosseinkurd.arrowstepper.component.ShitView
-import com.hosseinkurd.arrowstepper.component.enums.ShitState
-import com.hosseinkurd.arrowstepper.component.interfaces.OnShitClickListener
-import com.hosseinkurd.arrowstepper.component.interfaces.OnStateChangedListener
+import com.hosseinkurd.component.arrowstepper.ShitStepper
+import com.hosseinkurd.component.arrowstepper.ShitView
+import com.hosseinkurd.component.arrowstepper.enums.ShitState
+import com.hosseinkurd.component.arrowstepper.interfaces.OnShitClickListener
+import com.hosseinkurd.component.arrowstepper.interfaces.OnStateChangedListener
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
                     toggleState()
                     invalidate()
                 }
-                println("ShitStepper >> Selected child id : ${shitView?.id} , position : $position")
             }
         }
         findViewById<Button>(R.id.buttonSubmit).setOnClickListener {
@@ -48,8 +47,8 @@ class MainActivity : AppCompatActivity() {
                 onStateChangedListener = object : OnStateChangedListener {
                     override fun onStateChanged(shitState: ShitState) {
                         it.text = if (shitState == ShitState.SHIT_EXPANDED) {
-                            "Show me on expanded"
-                        } else "Show me on collapsed"
+                            "It is expanded"
+                        } else "Collapsed"
                     }
                 }
             })

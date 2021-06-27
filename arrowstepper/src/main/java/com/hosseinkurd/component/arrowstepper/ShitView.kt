@@ -1,17 +1,17 @@
-package com.hosseinkurd.arrowstepper.component
+package com.hosseinkurd.component.arrowstepper
 
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import com.hosseinkurd.arrowstepper.component.enums.ShitState
-import com.hosseinkurd.arrowstepper.component.interfaces.OnStateChangedListener
+import com.hosseinkurd.component.arrowstepper.enums.ShitState
+import com.hosseinkurd.component.arrowstepper.interfaces.OnStateChangedListener
 
 class ShitView @JvmOverloads constructor(
     context: Context,
@@ -95,7 +95,6 @@ class ShitView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
-        println("ShitStepper >> ShitView >> onDraw ... $state , $width")
         drawShape(canvas)
         super.onDraw(canvas)
     }
@@ -108,15 +107,9 @@ class ShitView @JvmOverloads constructor(
         val path = Path()
         paint.apply {
             color = if (state == ShitState.SHIT_COLLAPSED) {
-                /*if (colorCollapsed != null) {
-                    return colorCollapsed
-                }*/
-                Color.argb(100, 190, 220, 220)
+                getColour(R.color.shit_background_collapsed)
             } else {
-                /*if (colorExpanded != null) {
-                    return colorExpanded
-                }*/
-                Color.argb(100, 0, 220, 220)
+                getColour(R.color.shit_background_expanded)
             }
             style = Paint.Style.FILL
             isAntiAlias = true
@@ -130,6 +123,14 @@ class ShitView @JvmOverloads constructor(
             lineTo(obliqueHorizontalGap, (height * 0.5).toFloat())
         }
         canvas.drawPath(path, paint)
+    }
+
+    private fun getColour(resId: Int): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            context.resources.getColor(resId, null)
+        } else {
+            context.resources.getColor(resId)
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package com.hosseinkurd.arrowstepper.component
+package com.hosseinkurd.component.arrowstepper
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -8,9 +8,8 @@ import android.view.View
 import android.view.animation.Animation
 import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
-import com.hosseinkurd.arrowstepper.R
-import com.hosseinkurd.arrowstepper.component.enums.ShitState
-import com.hosseinkurd.arrowstepper.component.interfaces.OnShitClickListener
+import com.hosseinkurd.component.arrowstepper.enums.ShitState
+import com.hosseinkurd.component.arrowstepper.interfaces.OnShitClickListener
 
 class ShitStepper @JvmOverloads constructor(
     context: Context,
@@ -40,17 +39,6 @@ class ShitStepper @JvmOverloads constructor(
             )
             obliqueHorizontalGap =
                 array.getDimension(R.styleable.ShitStepper_shitStepperObliqueHorizontalGap, 100F)
-            println("ShitStepper >> obliqueHorizontalGap : $obliqueHorizontalGap")
-            if (array.hasValue(R.styleable.ShitStepper_shitStepperExpandedColor)) {
-                colorExpanded =
-                    array.getColorStateList(R.styleable.ShitStepper_shitStepperExpandedColor)
-            }
-            println("ShitStepper >> colorExpanded : $colorExpanded")
-            if (array.hasValue(R.styleable.ShitStepper_shitStepperCollapsedColor)) {
-                colorCollapsed =
-                    array.getColorStateList(R.styleable.ShitStepper_shitStepperCollapsedColor)
-            }
-            println("ShitStepper >> colorCollapsed : $colorCollapsed")
             array.recycle()
         }
     }
