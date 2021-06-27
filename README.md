@@ -66,15 +66,20 @@ Step 2. Add the dependency
 
     <com.hosseinkurd.component.arrowstepper.ShitStepper
         android:id="@+id/shitStepper"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_margin="10dp"
         android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shitStepperExpandedColor="@color/shit_background_enabled"
+        app:shitStepperSingleExpand="true"
         app:shitStepperObliqueHorizontalGap="12dp" />
 
+# Change Colors:
 
-Good Luck
+add and modify colors at colors.xml to what you expect
+
+    <color name="shit_background_expanded">#3AA33A</color>
+    <color name="shit_background_collapsed">#C2CDC2</color>
+
+Special thanks [Hamidreza Amuzadeh](https://github.com/HamidrezaAmz "Hamidreza Amoozadeh")
+
+Enjoy ;)
