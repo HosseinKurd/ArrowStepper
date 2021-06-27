@@ -42,14 +42,14 @@ class MainActivity : AppCompatActivity() {
     private fun getShitView(): ShitView {
         return ShitView(this).apply {
             addChild(TextView(context).also {
-                it.text = "Collapsed Collapsed Collapsed"
+                it.text = "default text"
                 it.setTextColor(Color.BLACK)
                 it.gravity = Gravity.CENTER
                 onStateChangedListener = object : OnStateChangedListener {
                     override fun onStateChanged(shitState: ShitState) {
                         it.text = if (shitState == ShitState.SHIT_EXPANDED) {
-                            "Expanded Expanded Expanded Expanded"
-                        } else "Collapsed Collapsed Collapsed"
+                            "Show me on expanded"
+                        } else "Show me on collapsed"
                     }
                 }
             })
