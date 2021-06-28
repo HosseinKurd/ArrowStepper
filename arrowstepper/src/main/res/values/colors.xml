@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
         <color name="shit_background_expanded">#3AA33A</color>
-        <color name="shit_background_collapsed">#C2CDC2</color>
+        <color name="shit_background_collapsed">#DCDCDC</color>
 </resources>

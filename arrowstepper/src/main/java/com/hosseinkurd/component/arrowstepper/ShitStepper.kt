@@ -132,4 +132,19 @@ class ShitStepper @JvmOverloads constructor(
         }
         return shitView
     }
+
+    fun toggleChildAt(index: Int) {
+        val linearLayoutShitHolder: LinearLayout =
+            mainView.findViewById(R.id.linearLayoutShitHolder)
+        if (index >= linearLayoutShitHolder.childCount) {
+            println("toggleChildAt >> $index >= ${linearLayoutShitHolder.childCount}")
+            return
+        }
+        if (linearLayoutShitHolder.getChildAt(index) is ShitView) {
+            (linearLayoutShitHolder.getChildAt(index) as ShitView).apply {
+                println("toggleChildAt >> Toggle State $index")
+                toggleState()
+            }
+        }
+    }
 }

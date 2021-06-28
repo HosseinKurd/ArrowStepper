@@ -42,6 +42,7 @@ Step 2. Add the dependency
                 add(getShitView())
             }
             shitStepper.addShits(shits)
+            shitStepper.toggleChildAt(0)
         }
     // ====================
 
