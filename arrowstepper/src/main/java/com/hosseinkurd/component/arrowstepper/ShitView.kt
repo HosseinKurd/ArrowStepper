@@ -28,6 +28,7 @@ class ShitView @JvmOverloads constructor(
     var colorExpanded: ColorStateList? = null
     var colorCollapsed: ColorStateList? = null
     var state: ShitState = ShitState.SHIT_COLLAPSED
+    var removeStartAngle = false
 
     fun addChild(view: View) {
         view.apply {
@@ -122,13 +123,15 @@ class ShitView @JvmOverloads constructor(
                 lineTo(0f, (height * 0.5).toFloat())
                 lineTo(obliqueHorizontalGap, height.toFloat())
                 lineTo(width.toFloat(), height.toFloat())
-                lineTo(width - obliqueHorizontalGap, (height * 0.5).toFloat())
+                if (removeStartAngle.not())
+                    lineTo(width - obliqueHorizontalGap, (height * 0.5).toFloat())
             }
         } else {
             path.apply {
                 moveTo(0f, 0f)
                 lineTo(width - obliqueHorizontalGap, 0F)
-                lineTo(width.toFloat(), (height * 0.5).toFloat())
+                if (removeStartAngle.not())
+                    lineTo(width.toFloat(), (height * 0.5).toFloat())
                 lineTo(width - obliqueHorizontalGap, height.toFloat())
                 lineTo(0f, height.toFloat())
                 lineTo(obliqueHorizontalGap, (height * 0.5).toFloat())

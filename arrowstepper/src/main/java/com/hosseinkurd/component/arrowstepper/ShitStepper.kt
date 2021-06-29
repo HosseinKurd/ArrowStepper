@@ -26,6 +26,7 @@ class ShitStepper @JvmOverloads constructor(
     var collapsedAnimation: Animation? = null
     var expandedAnimation: Animation? = null
     var singleExpand: Boolean = true
+    private var removeFirstShitStartAngle: Boolean = true
     private var obliqueHorizontalGap = 24.75f
     private var colorExpanded: ColorStateList? = null
     private var colorCollapsed: ColorStateList? = null
@@ -46,6 +47,13 @@ class ShitStepper @JvmOverloads constructor(
                 singleExpand =
                     typedArray.getBoolean(
                         R.styleable.ShitStepper_shitStepperSingleExpand,
+                        true
+                    )
+            }
+            if (typedArray.hasValue(R.styleable.ShitStepper_shitStepperRemoveFirstShitStartAngle)) {
+                removeFirstShitStartAngle =
+                    typedArray.getBoolean(
+                        R.styleable.ShitStepper_shitStepperRemoveFirstShitStartAngle,
                         true
                     )
             }
@@ -108,6 +116,10 @@ class ShitStepper @JvmOverloads constructor(
             LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, height - paddingOffsetVertical)
         if (parentChildIndex > 0) {
             mLayoutParams.marginStart = (obliqueHorizontalGap * -0.8).toInt()
+        } else {
+            if (removeFirstShitStartAngle) {
+                shitView.removeStartAngle = removeFirstShitStartAngle
+            }
         }
         shitView.apply {
             layoutParams = mLayoutParams
