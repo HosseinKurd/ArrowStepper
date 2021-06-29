@@ -13,7 +13,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import com.hosseinkurd.component.arrowstepper.enums.ShitState
 import com.hosseinkurd.component.arrowstepper.interfaces.OnStateChangedListener
 
-class ShitView @JvmOverloads constructor(
+class ShitStepperItem @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -107,7 +107,6 @@ class ShitView @JvmOverloads constructor(
         val paint = Paint()
         val path = Path()
         paint.apply {
-            println()
             color = if (state == ShitState.SHIT_COLLAPSED) {
                 getColour(R.color.shit_background_collapsed)
             } else {
@@ -130,11 +129,11 @@ class ShitView @JvmOverloads constructor(
             path.apply {
                 moveTo(0f, 0f)
                 lineTo(width - obliqueHorizontalGap, 0F)
-                if (removeStartAngle.not())
-                    lineTo(width.toFloat(), (height * 0.5).toFloat())
+                lineTo(width.toFloat(), (height * 0.5).toFloat())
                 lineTo(width - obliqueHorizontalGap, height.toFloat())
                 lineTo(0f, height.toFloat())
-                lineTo(obliqueHorizontalGap, (height * 0.5).toFloat())
+                if (removeStartAngle.not())
+                    lineTo(obliqueHorizontalGap, (height * 0.5).toFloat())
             }
         }
         canvas.drawPath(path, paint)

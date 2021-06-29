@@ -4,5 +4,6 @@
         <attr name="shitStepperObliqueHorizontalGap" format="dimension"/>
         <attr name="shitStepperSingleExpand" format="boolean"/>
         <attr name="shitStepperRemoveFirstShitStartAngle" format="boolean"/>
+        <attr name="shitStepperDisableOnClick" format="boolean"/>
     </declare-styleable>
 </resources>

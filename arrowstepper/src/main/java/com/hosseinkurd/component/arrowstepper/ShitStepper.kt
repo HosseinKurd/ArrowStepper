@@ -3,13 +3,16 @@ package com.hosseinkurd.component.arrowstepper
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
+import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.hosseinkurd.component.arrowstepper.enums.ShitState
-import com.hosseinkurd.component.arrowstepper.interfaces.OnShitClickListener
+import com.hosseinkurd.component.arrowstepper.interfaces.OnShitStepperItemClickListener
 
 class ShitStepper @JvmOverloads constructor(
     context: Context,
@@ -22,11 +25,12 @@ class ShitStepper @JvmOverloads constructor(
         defStyleAttr
     ) {
 
-    var onShitClickListener: OnShitClickListener? = null
+    var onShitStepperItemClickListener: OnShitStepperItemClickListener? = null
     var collapsedAnimation: Animation? = null
     var expandedAnimation: Animation? = null
     var singleExpand: Boolean = true
-    private var removeFirstShitStartAngle: Boolean = true
+    var removeFirstShitStartAngle: Boolean = true
+    var isOnClickDisabled: Boolean = false
     private var obliqueHorizontalGap = 24.75f
     private var colorExpanded: ColorStateList? = null
     private var colorCollapsed: ColorStateList? = null
@@ -57,12 +61,37 @@ class ShitStepper @JvmOverloads constructor(
                         true
                     )
             }
+            if (typedArray.hasValue(R.styleable.ShitStepper_shitStepperDisableOnClick)) {
+                isOnClickDisabled =
+                    typedArray.getBoolean(
+                        R.styleable.ShitStepper_shitStepperDisableOnClick,
+                        false
+                    )
+            }
             typedArray.recycle()
         }
     }
 
-    fun addShits(shits: MutableList<ShitView>) {
-        shits.forEach { shitView ->
+    fun selectNext() {
+        val linearLayoutShitHolder: LinearLayout =
+            mainView.findViewById(R.id.linearLayoutShitHolder)
+        val currentSelectedIndex: Int = currentSelectedIndex()
+        if (currentSelectedIndex == -1 || currentSelectedIndex == linearLayoutShitHolder.childCount - 1) {
+            return
+        }
+        toggleChildOnlyAt(currentSelectedIndex + 1)
+    }
+
+    fun selectPrevious() {
+        val currentSelectedIndex: Int = currentSelectedIndex()
+        if (currentSelectedIndex == -1 || currentSelectedIndex == 0) {
+            return
+        }
+        toggleChildOnlyAt(currentSelectedIndex - 1)
+    }
+
+    fun addShitStepperItems(shitStepperItems: MutableList<ShitStepperItem>) {
+        shitStepperItems.forEach { shitView ->
             if (shitView.childCount > 0) {
                 shitView.getChildAt(0)
                     .setPadding(
@@ -77,11 +106,15 @@ class ShitStepper @JvmOverloads constructor(
             linearLayoutShitHolder.addView(
                 getNewChild(
                     parent = linearLayoutShitHolder,
-                    shitView = shitView
+                    shitStepperItem = shitView
                 )
             )
         }
-        postInvalidate()
+        Handler(Looper.getMainLooper()).postDelayed({
+            val horizontalScrollViewShitHolder: HorizontalScrollView =
+                mainView.findViewById(R.id.horizontalScrollViewShitHolder)
+            horizontalScrollViewShitHolder.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
+        }, 120)
     }
 
     fun addShit() {
@@ -90,7 +123,7 @@ class ShitStepper @JvmOverloads constructor(
         linearLayoutShitHolder.addView(
             getNewChild(
                 parent = linearLayoutShitHolder,
-                shitView = ShitView(context)
+                shitStepperItem = ShitStepperItem(context)
             )
         )
     }
@@ -101,16 +134,38 @@ class ShitStepper @JvmOverloads constructor(
         linearLayoutShitHolder.addView(
             getNewChild(
                 parent = linearLayoutShitHolder,
-                shitView = ShitView(context)
+                shitStepperItem = ShitStepperItem(context)
             ), index
         )
     }
 
-    private fun getNewChild(parent: LinearLayout, shitView: ShitView): View {
+    fun toggleChildOnlyAt(index: Int) {
+        val linearLayoutShitHolder: LinearLayout =
+            mainView.findViewById(R.id.linearLayoutShitHolder)
+        if (index >= linearLayoutShitHolder.childCount) {
+            return
+        }
+        for (i in 0..linearLayoutShitHolder.childCount) {
+            if (linearLayoutShitHolder.getChildAt(i) is ShitStepperItem) {
+                (linearLayoutShitHolder.getChildAt(i) as ShitStepperItem).apply {
+                    if (i == index) {
+                        onShitStepperItemClickListener?.onShitStepperItemClicked(this, index)
+                        if (expandedAnimation != null) startAnimation(expandedAnimation)
+                        expandState()
+                    } else if (state == ShitState.SHIT_EXPANDED) {
+                        if (collapsedAnimation != null) startAnimation(collapsedAnimation)
+                        collapseState()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getNewChild(parent: LinearLayout, shitStepperItem: ShitStepperItem): View {
         val parentChildIndex: Int = parent.childCount
-        shitView.obliqueHorizontalGap = obliqueHorizontalGap
-        shitView.colorExpanded = colorExpanded
-        shitView.colorCollapsed = colorCollapsed
+        shitStepperItem.obliqueHorizontalGap = obliqueHorizontalGap
+        shitStepperItem.colorExpanded = colorExpanded
+        shitStepperItem.colorCollapsed = colorCollapsed
         val paddingOffsetVertical = paddingTop + paddingBottom
         val mLayoutParams =
             LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, height - paddingOffsetVertical)
@@ -118,22 +173,28 @@ class ShitStepper @JvmOverloads constructor(
             mLayoutParams.marginStart = (obliqueHorizontalGap * -0.8).toInt()
         } else {
             if (removeFirstShitStartAngle) {
-                shitView.removeStartAngle = removeFirstShitStartAngle
+                shitStepperItem.removeStartAngle = removeFirstShitStartAngle
             }
         }
-        shitView.apply {
+        shitStepperItem.apply {
             layoutParams = mLayoutParams
             id = View.generateViewId()
             setOnClickListener {
-                onShitClickListener?.onShitClicked(shitView, parentChildIndex)
-                if (shitView.state == ShitState.SHIT_COLLAPSED && collapsedAnimation != null) {
-                    shitView.startAnimation(collapsedAnimation)
-                } else if (shitView.state == ShitState.SHIT_EXPANDED && expandedAnimation != null) {
-                    shitView.startAnimation(expandedAnimation)
+                if (isOnClickDisabled) {
+                    return@setOnClickListener
+                }
+                onShitStepperItemClickListener?.onShitStepperItemClicked(
+                    shitStepperItem,
+                    parentChildIndex
+                )
+                if (shitStepperItem.state == ShitState.SHIT_COLLAPSED && collapsedAnimation != null) {
+                    shitStepperItem.startAnimation(collapsedAnimation)
+                } else if (shitStepperItem.state == ShitState.SHIT_EXPANDED && expandedAnimation != null) {
+                    shitStepperItem.startAnimation(expandedAnimation)
                     for (i in 0..parent.childCount) {
                         if (i == parentChildIndex) continue
-                        if (parent.getChildAt(i) is ShitView) {
-                            (parent.getChildAt(i) as ShitView).apply {
+                        if (parent.getChildAt(i) is ShitStepperItem) {
+                            (parent.getChildAt(i) as ShitStepperItem).apply {
                                 if (state == ShitState.SHIT_EXPANDED) collapseState()
                             }
                         }
@@ -142,21 +203,20 @@ class ShitStepper @JvmOverloads constructor(
             }
             setWillNotDraw(false)
         }
-        return shitView
+        return shitStepperItem
     }
 
-    fun toggleChildAt(index: Int) {
+    private fun currentSelectedIndex(): Int {
         val linearLayoutShitHolder: LinearLayout =
             mainView.findViewById(R.id.linearLayoutShitHolder)
-        if (index >= linearLayoutShitHolder.childCount) {
-            println("toggleChildAt >> $index >= ${linearLayoutShitHolder.childCount}")
-            return
-        }
-        if (linearLayoutShitHolder.getChildAt(index) is ShitView) {
-            (linearLayoutShitHolder.getChildAt(index) as ShitView).apply {
-                println("toggleChildAt >> Toggle State $index")
-                toggleState()
+        for (i in 0..linearLayoutShitHolder.childCount) {
+            if (linearLayoutShitHolder.getChildAt(i) is ShitStepperItem) {
+                (linearLayoutShitHolder.getChildAt(i) as ShitStepperItem).apply {
+                    if (state == ShitState.SHIT_EXPANDED) return i
+                }
             }
         }
+        return -1
     }
+
 }

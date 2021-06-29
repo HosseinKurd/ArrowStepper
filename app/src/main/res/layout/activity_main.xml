@@ -2,24 +2,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layoutDirection="rtl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:layoutDirection="rtl"
     tools:context=".MainActivity">
 
     <com.hosseinkurd.component.arrowstepper.ShitStepper
         android:id="@+id/shitStepper"
         android:layout_width="0dp"
-        android:layoutDirection="rtl"
         android:layout_height="100dp"
-        android:layout_margin="10dp"
-        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shitStepperSingleExpand="true"
-        app:shitStepperObliqueHorizontalGap="12dp" />
+        app:shitStepperDisableOnClick="true"
+        app:shitStepperObliqueHorizontalGap="12dp"
+        app:shitStepperRemoveFirstShitStartAngle="true"
+        app:shitStepperSingleExpand="true" />
 
     <Button
         android:id="@+id/buttonSubmit"
@@ -27,8 +26,26 @@
         android:layout_height="wrap_content"
         android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonNext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSubmit"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <Button
+        android:id="@+id/buttonPrev"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/previous"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSubmit"
+        app:layout_constraintWidth_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
