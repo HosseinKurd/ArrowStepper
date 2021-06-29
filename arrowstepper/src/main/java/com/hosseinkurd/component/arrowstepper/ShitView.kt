@@ -106,6 +106,7 @@ class ShitView @JvmOverloads constructor(
         val paint = Paint()
         val path = Path()
         paint.apply {
+            println()
             color = if (state == ShitState.SHIT_COLLAPSED) {
                 getColour(R.color.shit_background_collapsed)
             } else {
@@ -114,13 +115,24 @@ class ShitView @JvmOverloads constructor(
             style = Paint.Style.FILL
             isAntiAlias = true
         }
-        path.apply {
-            moveTo(0f, 0f)
-            lineTo(width - obliqueHorizontalGap, 0F)
-            lineTo(width.toFloat(), (height * 0.5).toFloat())
-            lineTo(width - obliqueHorizontalGap, height.toFloat())
-            lineTo(0f, height.toFloat())
-            lineTo(obliqueHorizontalGap, (height * 0.5).toFloat())
+        if (isRtl) {
+            path.apply {
+                moveTo(width.toFloat(), 0f)
+                lineTo(obliqueHorizontalGap, 0F)
+                lineTo(0f, (height * 0.5).toFloat())
+                lineTo(obliqueHorizontalGap, height.toFloat())
+                lineTo(width.toFloat(), height.toFloat())
+                lineTo(width - obliqueHorizontalGap, (height * 0.5).toFloat())
+            }
+        } else {
+            path.apply {
+                moveTo(0f, 0f)
+                lineTo(width - obliqueHorizontalGap, 0F)
+                lineTo(width.toFloat(), (height * 0.5).toFloat())
+                lineTo(width - obliqueHorizontalGap, height.toFloat())
+                lineTo(0f, height.toFloat())
+                lineTo(obliqueHorizontalGap, (height * 0.5).toFloat())
+            }
         }
         canvas.drawPath(path, paint)
     }
@@ -132,5 +144,4 @@ class ShitView @JvmOverloads constructor(
             context.resources.getColor(resId)
         }
     }
-
 }
