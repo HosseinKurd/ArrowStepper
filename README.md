@@ -23,19 +23,87 @@ Step 2. Add the dependency
 
 # Kotlin sample Code:
 
-        val shitStepper: ShitStepper = findViewById(R.id.shitStepper)
-        shitStepper.expandedAnimation =
-            AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
-        shitStepper.collapsedAnimation =
-            AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
-        shitStepper.onShitClickListener = object : OnShitClickListener {
-            override fun onShitClicked(shitView: ShitView?, position: Int) {
-                shitView?.apply {
-                    toggleState()
-                    invalidate()
-                }
-                println("ShitStepper >> Selected child id : ${shitView?.id} , position : $position")
+        val shitStepperItems = mutableListOf<ShitStepperItem>().apply {
+                        add(
+                            ShitStepperItem(this@MainActivity).apply {
+                                addChild(TextView(context).also {
+                                    it.text = "1"
+                                    it.setTextColor(resources.getColour(R.color.black))
+                                    it.minWidth = 300
+                                    it.gravity = Gravity.CENTER
+                                    onStateChangedListener = object : OnStateChangedListener {
+                                        override fun onStateChanged(shitState: ShitState) {
+                                            it.text = if (shitState == ShitState.SHIT_EXPANDED) {
+                                                "1 گام اول"
+                                            } else "1"
+                                        }
+                                    }
+                                })
+                            }
+                        )
+                        add(
+                            ShitStepperItem(this@MainActivity).apply {
+                                addChild(TextView(context).also {
+                                    it.text = "2"
+                                    it.setTextColor(resources.getColour(R.color.black))
+                                    it.minWidth = 300
+                                    it.gravity = Gravity.CENTER
+                                    onStateChangedListener = object : OnStateChangedListener {
+                                        override fun onStateChanged(shitState: ShitState) {
+                                            it.text = if (shitState == ShitState.SHIT_EXPANDED) {
+                                                "2 گام دوم"
+                                            } else "2"
+                                        }
+                                    }
+                                })
+                            }
+                        )
+                        add(
+                            ShitStepperItem(this@MainActivity).apply {
+                                addChild(TextView(context).also {
+                                    it.text = "3"
+                                    it.setTextColor(resources.getColour(R.color.black))
+                                    it.minWidth = 300
+                                    it.gravity = Gravity.CENTER
+                                    onStateChangedListener = object : OnStateChangedListener {
+                                        override fun onStateChanged(shitState: ShitState) {
+                                            it.text = if (shitState == ShitState.SHIT_EXPANDED) {
+                                                "3 گام سوم"
+                                            } else "3"
+                                        }
+                                    }
+                                })
+                            }
+                        )
+                        add(
+                            ShitStepperItem(this@MainActivity).apply {
+                                addChild(TextView(context).also {
+                                    it.text = "4"
+                                    it.setTextColor(resources.getColour(R.color.black))
+                                    it.minWidth = 300
+                                    it.gravity = Gravity.CENTER
+                                    onStateChangedListener = object : OnStateChangedListener {
+                                        override fun onStateChanged(shitState: ShitState) {
+                                            if (shitState == ShitState.SHIT_EXPANDED) {
+                                                it.text = "4 گام چهارم"
+                                            } else {
+                                                it.text = "4"
+                                                it.setTextColor(resources.getColour(R.color.black))
+                                            }
+                                        }
+                                    }
+                                })
+                            }
+                        )
+                    }
+                    shitStepper.addShitStepperItems(shitStepperItems)
+                    shitStepper.toggleChildOnlyAt(0)
+        findViewById<Button>(R.id.buttonSubmit).setOnClickListener {
+            val shits = mutableListOf<ShitView>().apply {
+                add(getShitView())
             }
+            shitStepper.addShits(shits)
+            shitStepper.toggleChildAt(0)
         }
         findViewById<Button>(R.id.buttonSubmit).setOnClickListener {
             val shits = mutableListOf<ShitView>().apply {
@@ -44,35 +112,24 @@ Step 2. Add the dependency
             shitStepper.addShits(shits)
             shitStepper.toggleChildAt(0)
         }
-    // ====================
-
-    private fun getShitView(): ShitView {
-        return ShitView(this).apply {
-            addChild(TextView(context).also {
-                it.text = "default text"
-                it.setTextColor(Color.BLACK)
-                it.gravity = Gravity.CENTER
-                onStateChangedListener = object : OnStateChangedListener {
-                    override fun onStateChanged(shitState: ShitState) {
-                        it.text = if (shitState == ShitState.SHIT_EXPANDED) {
-                            "Show me on expanded"
-                        } else "Show me on collapsed"
-                    }
-                }
-            })
+        findViewById<Button>(R.id.buttonPrev).setOnClickListener {
+            shitStepper.selectPrevious()
         }
-    }
+        findViewById<Button>(R.id.buttonNext).setOnClickListener {
+             shitStepper.selectNext()
+        }
+        
 
 # XML:
 
     <com.hosseinkurd.component.arrowstepper.ShitStepper
-        android:id="@+id/shitStepper"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        app:shitStepperSingleExpand="true"
-        app:shitStepperObliqueHorizontalGap="12dp" />
+            android:id="@+id/shitStepper"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            app:shitStepperDisableOnClick="true"
+            app:shitStepperObliqueHorizontalGap="12dp"
+            app:shitStepperRemoveFirstShitStartAngle="true"
+            app:shitStepperSingleExpand="true" />
 
 # Change Colors:
 
