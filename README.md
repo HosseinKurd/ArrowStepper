@@ -103,14 +103,14 @@ Step 2. Add the dependency
                 add(getShitView())
             }
             shitStepper.addShits(shits)
-            shitStepper.toggleChildAt(0)
+            shitStepper.expandChildOnlyAt(0)
         }
         findViewById<Button>(R.id.buttonSubmit).setOnClickListener {
             val shits = mutableListOf<ShitView>().apply {
                 add(getShitView())
             }
             shitStepper.addShits(shits)
-            shitStepper.toggleChildAt(0)
+            shitStepper.expandChildOnlyAt(0)
         }
         findViewById<Button>(R.id.buttonPrev).setOnClickListener {
              // Select previous Item if exists

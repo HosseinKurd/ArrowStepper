@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             shitStepper.addShitStepperItems(shitStepperItems)
-            shitStepper.toggleChildOnlyAt(0)
+            shitStepper.expandChildOnlyAt(0)
         } else if (v?.id == R.id.buttonPrev) {
             shitStepper.selectPrevious()
             Toast.makeText(this, " ${shitStepper.getExpandedIndexes()}", Toast.LENGTH_LONG).show()

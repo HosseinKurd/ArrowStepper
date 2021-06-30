@@ -79,7 +79,7 @@ class ShitStepper @JvmOverloads constructor(
         if (currentSelectedIndex == -1 || currentSelectedIndex == linearLayoutShitHolder.childCount - 1) {
             return
         }
-        toggleChildOnlyAt(currentSelectedIndex + 1)
+        expandChildOnlyAt(currentSelectedIndex + 1)
     }
 
     fun selectPrevious() {
@@ -87,7 +87,7 @@ class ShitStepper @JvmOverloads constructor(
         if (currentSelectedIndex == -1 || currentSelectedIndex == 0) {
             return
         }
-        toggleChildOnlyAt(currentSelectedIndex - 1)
+        expandChildOnlyAt(currentSelectedIndex - 1)
     }
 
     fun addShitStepperItems(shitStepperItems: MutableList<ShitStepperItem>) {
@@ -139,7 +139,7 @@ class ShitStepper @JvmOverloads constructor(
         )
     }
 
-    fun toggleChildOnlyAt(index: Int) {
+    fun expandChildOnlyAt(index: Int) {
         val linearLayoutShitHolder: LinearLayout =
             mainView.findViewById(R.id.linearLayoutShitHolder)
         if (index >= linearLayoutShitHolder.childCount) {
