@@ -161,6 +161,92 @@ class ShitStepper @JvmOverloads constructor(
         }
     }
 
+    fun getExpandedIndexes(): MutableList<Int> {
+        val expandedIndexes = mutableListOf<Int>()
+        val linearLayoutShitHolder: LinearLayout =
+            mainView.findViewById(R.id.linearLayoutShitHolder)
+        for (i in 0..linearLayoutShitHolder.childCount) {
+            if (linearLayoutShitHolder.getChildAt(i) is ShitStepperItem) {
+                (linearLayoutShitHolder.getChildAt(i) as ShitStepperItem).apply {
+                    if (state == ShitState.SHIT_EXPANDED) expandedIndexes.add(i)
+                }
+            }
+        }
+        return expandedIndexes
+    }
+
+    fun scrollToFirstExpanded() {
+        val expandedIndexes = getExpandedIndexes()
+        if (expandedIndexes.isEmpty()) {
+            return
+        }
+        val horizontalScrollViewShitHolder: HorizontalScrollView =
+            mainView.findViewById(R.id.horizontalScrollViewShitHolder)
+        horizontalScrollViewShitHolder.post {
+            val linearLayoutShitHolder: LinearLayout =
+                mainView.findViewById(R.id.linearLayoutShitHolder)
+            horizontalScrollViewShitHolder.scrollTo(
+                linearLayoutShitHolder.getChildAt(
+                    expandedIndexes[0]
+                ).left, 0
+            )
+        }
+    }
+
+    fun smoothScrollToFirstExpanded() {
+        val expandedIndexes = getExpandedIndexes()
+        if (expandedIndexes.isEmpty()) {
+            return
+        }
+        val horizontalScrollViewShitHolder: HorizontalScrollView =
+            mainView.findViewById(R.id.horizontalScrollViewShitHolder)
+        horizontalScrollViewShitHolder.post {
+            val linearLayoutShitHolder: LinearLayout =
+                mainView.findViewById(R.id.linearLayoutShitHolder)
+            horizontalScrollViewShitHolder.smoothScrollTo(
+                linearLayoutShitHolder.getChildAt(
+                    expandedIndexes[0]
+                ).left, 0
+            )
+        }
+    }
+
+    fun scrollToLastExpanded() {
+        val expandedIndexes = getExpandedIndexes()
+        if (expandedIndexes.isEmpty()) {
+            return
+        }
+        val horizontalScrollViewShitHolder: HorizontalScrollView =
+            mainView.findViewById(R.id.horizontalScrollViewShitHolder)
+        horizontalScrollViewShitHolder.post {
+            val linearLayoutShitHolder: LinearLayout =
+                mainView.findViewById(R.id.linearLayoutShitHolder)
+            horizontalScrollViewShitHolder.scrollTo(
+                linearLayoutShitHolder.getChildAt(
+                    expandedIndexes[expandedIndexes.size - 1]
+                ).left, 0
+            )
+        }
+    }
+
+    fun smoothScrollToLastExpanded() {
+        val expandedIndexes = getExpandedIndexes()
+        if (expandedIndexes.isEmpty()) {
+            return
+        }
+        val horizontalScrollViewShitHolder: HorizontalScrollView =
+            mainView.findViewById(R.id.horizontalScrollViewShitHolder)
+        horizontalScrollViewShitHolder.post {
+            val linearLayoutShitHolder: LinearLayout =
+                mainView.findViewById(R.id.linearLayoutShitHolder)
+            horizontalScrollViewShitHolder.smoothScrollTo(
+                linearLayoutShitHolder.getChildAt(
+                    expandedIndexes[expandedIndexes.size - 1]
+                ).left, 0
+            )
+        }
+    }
+
     private fun getNewChild(parent: LinearLayout, shitStepperItem: ShitStepperItem): View {
         val parentChildIndex: Int = parent.childCount
         shitStepperItem.obliqueHorizontalGap = obliqueHorizontalGap
