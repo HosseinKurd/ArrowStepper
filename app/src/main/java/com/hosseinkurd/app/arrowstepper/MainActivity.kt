@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<Button>(R.id.buttonSubmit).setOnClickListener(this)
         findViewById<Button>(R.id.buttonPrev).setOnClickListener(this)
         findViewById<Button>(R.id.buttonNext).setOnClickListener(this)
-        shitStepper.isOnClickDisabled = true
     }
 
     override fun onClick(v: View?) {
@@ -50,6 +49,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val shitStepperItems = mutableListOf<ShitStepperItem>().apply {
                 add(
                     ShitStepperItem(this@MainActivity).apply {
+                        minWidth = (shitStepper.width * 0.333).toInt()
                         addChild(TextView(context).also {
                             it.text = "1"
                             it.setTextColor(resources.getColour(R.color.black))
@@ -57,9 +57,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             it.gravity = Gravity.CENTER
                             onStateChangedListener = object : OnStateChangedListener {
                                 override fun onStateChanged(shitState: ShitState) {
-                                    it.text = if (shitState == ShitState.SHIT_EXPANDED) {
-                                        "1 گام اول"
-                                    } else "1"
+                                    if (shitState == ShitState.SHIT_EXPANDED) {
+                                        it.text = "1 گام اول"
+                                        it.setTextColor(resources.getColour(R.color.black))
+                                    } else {
+                                        it.text = "1"
+                                        it.setTextColor(resources.getColour(R.color.white))
+                                    }
                                 }
                             }
                         })
@@ -67,6 +71,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 )
                 add(
                     ShitStepperItem(this@MainActivity).apply {
+                        minWidth = (shitStepper.width * 0.333).toInt()
                         addChild(TextView(context).also {
                             it.text = "2"
                             it.setTextColor(resources.getColour(R.color.black))
@@ -74,9 +79,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             it.gravity = Gravity.CENTER
                             onStateChangedListener = object : OnStateChangedListener {
                                 override fun onStateChanged(shitState: ShitState) {
-                                    it.text = if (shitState == ShitState.SHIT_EXPANDED) {
-                                        "2 گام دوم"
-                                    } else "2"
+                                    if (shitState == ShitState.SHIT_EXPANDED) {
+                                        it.text = "2 گام دوم"
+                                        it.setTextColor(resources.getColour(R.color.black))
+                                    } else {
+                                        it.text = "2"
+                                        it.setTextColor(resources.getColour(R.color.white))
+                                    }
                                 }
                             }
                         })
@@ -84,6 +93,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 )
                 add(
                     ShitStepperItem(this@MainActivity).apply {
+                        minWidth = (shitStepper.width * 0.333).toInt()
                         addChild(TextView(context).also {
                             it.text = "3"
                             it.setTextColor(resources.getColour(R.color.black))
@@ -91,9 +101,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             it.gravity = Gravity.CENTER
                             onStateChangedListener = object : OnStateChangedListener {
                                 override fun onStateChanged(shitState: ShitState) {
-                                    it.text = if (shitState == ShitState.SHIT_EXPANDED) {
-                                        "3 گام سوم"
-                                    } else "3"
+                                    if (shitState == ShitState.SHIT_EXPANDED) {
+                                        it.text = "3 گام سوم"
+                                    } else {
+                                        it.text = "3"
+                                        it.setTextColor(resources.getColour(R.color.white))
+                                    }
                                 }
                             }
                         })
@@ -110,9 +123,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                                 override fun onStateChanged(shitState: ShitState) {
                                     if (shitState == ShitState.SHIT_EXPANDED) {
                                         it.text = "4 گام چهارم"
+                                        it.setTextColor(resources.getColour(R.color.black))
                                     } else {
                                         it.text = "4"
-                                        it.setTextColor(resources.getColour(R.color.black))
+                                        it.setTextColor(resources.getColour(R.color.white))
                                     }
                                 }
                             }
