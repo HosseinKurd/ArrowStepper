@@ -29,7 +29,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         shitStepper.collapsedAnimation =
             AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
         shitStepper.onShitStepperItemClickListener = object : OnShitStepperItemClickListener {
-            override fun onShitStepperItemClicked(shitStepperItem: ShitStepperItem?, position: Int) {
+            override fun onShitStepperItemClicked(
+                shitStepperItem: ShitStepperItem?,
+                position: Int
+            ) {
                 shitStepperItem?.apply {
                     toggleState()
                     invalidate()
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<Button>(R.id.buttonSubmit).setOnClickListener(this)
         findViewById<Button>(R.id.buttonPrev).setOnClickListener(this)
         findViewById<Button>(R.id.buttonNext).setOnClickListener(this)
+        shitStepper.isOnClickDisabled = true
     }
 
     override fun onClick(v: View?) {

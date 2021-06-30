@@ -113,12 +113,15 @@ Step 2. Add the dependency
             shitStepper.toggleChildAt(0)
         }
         findViewById<Button>(R.id.buttonPrev).setOnClickListener {
+             // Select previous Item if exists
             shitStepper.selectPrevious()
         }
         findViewById<Button>(R.id.buttonNext).setOnClickListener {
+             // Select next Item if exists
              shitStepper.selectNext()
         }
-        
+        // Disable manually select by clicking on item
+        shitStepper.isOnClickDisabled = true
 
 # XML:
 
